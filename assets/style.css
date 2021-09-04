@@ -44,8 +44,6 @@ header h1 {
 .forecast {
   margin-top: 50px;
   border: olive 2px solid;
+  display: flexbox;
 }
 
-.what {
-    
-}
