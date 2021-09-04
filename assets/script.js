@@ -1,9 +1,10 @@
 var api = "https://api.openweathermap.org/data/2.5/weather?q=";
 
-var apiKey = "9504c29e0d15333519b3aa6f3c2b9734";
+var apiKey = "&appid=9504c29e0d15333519b3aa6f3c2b9734";
 var units = "&units=imperial";
 
 var input = document.getElementById("searchBox")
+
 
 var button = document.querySelector(".searchBtn")
 
@@ -37,13 +38,13 @@ window.onload = stockWeather();
 
 
 function searchWeather() {
-    var url = (api + input.value + apiKey + units)
+    var url = fetch(api + input.value + units + apiKey)
         .then(function (response) {
             response.json().then(function (data) {
 
                 var cityNameEl = document.querySelector("#cityName");
-                //cityNameEl.innerHTML = "";
-                cityNameEl.append(data.name)
+
+                cityNameEl.innerHTML = data.name
 
                 var tempEl = document.querySelector("#temperature");
                 tempEl.append(data.main.temp + "°f");
@@ -58,6 +59,7 @@ function searchWeather() {
 
         })
 }
+
 
 var button = document.querySelector(".searchBtn")
 button.addEventListener("click", searchWeather)
