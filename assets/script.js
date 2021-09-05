@@ -8,7 +8,8 @@ var units = "&units=imperial";
 
 var input = document.getElementById("searchBox")
 var button = document.querySelector(".searchBtn")
-var cityValue = document.querySelector(".cityBtn")
+//var cityValue = eve
+
 
 
 // function for weather in Kiel, right when page loads
@@ -65,7 +66,7 @@ function searchWeather() {
 
 function cityButtons() {
     //when city button is clicked the corresponding weather is loaded 
-    var url = fetch(api + cityValue.innerHTML + units + apiKey)
+    var url = fetch(api + + units + apiKey)
         .then(function (response) {
             response.json().then(function (data) {
 
@@ -91,11 +92,12 @@ var button = document.querySelector(".searchBtn")
 button.addEventListener("click", searchWeather)
 
 // When city button is clicked it will run the CityButton function to load corresponding weather
-var cityBtn = document.querySelectorAll(".cityBtn")
-for (i of cityBtn) {
-    i.addEventListener("click", cityButtons)
+function handler(event) {
+    console.log(event.target.textContent)
 }
-
+document.querySelectorAll(".cityBtn").forEach(function (element) {
+    element.addEventListener('click', handler)
+})
 
 
 
