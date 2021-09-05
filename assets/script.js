@@ -8,7 +8,7 @@ var units = "&units=imperial";
 
 var input = document.getElementById("searchBox")
 var button = document.querySelector(".searchBtn")
-//var cityValue = eve
+var cityValue = ""
 
 
 
@@ -49,8 +49,7 @@ function searchWeather() {
             response.json().then(function (data) {
 
                 var cityNameEl = document.querySelector("#cityName");
-
-                cityNameEl.innerHTML = data.name
+                cityNameEl.innerHTML = data.name + "(" + moment(data.dt, "X").format("MM/DD/YYYY") + ") <img src=' http://openweathermap.org/img/wn/" + data.weather[0].icon + ".png' >"
 
                 var tempEl = document.querySelector("#temperature");
                 $(tempEl).empty().append("Temperature: " + data.main.temp + "°f");
@@ -66,12 +65,12 @@ function searchWeather() {
 
 function cityButtons() {
     //when city button is clicked the corresponding weather is loaded 
-    var url = fetch(api + + units + apiKey)
+    var url = fetch(api + cityValue + units + apiKey)
         .then(function (response) {
             response.json().then(function (data) {
-
+                console.log(data)
                 var cityNameEl = document.querySelector("#cityName");
-                cityNameEl.innerHTML = data.name
+                cityNameEl.innerHTML = data.name + "(" + moment(data.dt, "X").format("MM/DD/YYYY") + ") <img src=' http://openweathermap.org/img/wn/" + data.weather[0].icon + ".png' >"
 
                 var tempEl = document.querySelector("#temperature");
                 $(tempEl).empty().append("Temperature: " + data.main.temp + "°f");
@@ -81,10 +80,45 @@ function cityButtons() {
 
                 var humidityEl = document.querySelector("#humid");
                 $(humidityEl).empty().append("Humidity: " + data.main.humidity);
+
+                forecast()
             })
         })
 }
 
+function forecast() {
+    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityValue + "&appid=9504c29e0d15333519b3aa6f3c2b9734&units=imperial")
+        .then(function (response) {
+            return response.json()
+        })
+        .then(function (fiveDayData) {
+            console.log(fiveDayData)
+            var fiveDayCastArray = fiveDayData.list
+            var forecastEl = document.querySelector(".forecast")
+            for (let index = 3; index < fiveDayCastArray.length; index = index + 8) {
+
+                console.log(fiveDayCastArray[index])
+
+                forecastEl.innerHTML = forecastEl.innerHTML + `
+                <div class="col">
+
+                <div class="card" style="width: 12rem;">
+
+                    <div class="card-body">
+                        <h5 class="card-title">${moment(fiveDayCastArray[index].dt, "X").format("MM/DD/YYYY")}</h5>
+                        <img src=" http://openweathermap.org/img/wn/${fiveDayCastArray[index].weather[0].icon}.png">
+                        <p class="card-text">Temp: ${fiveDayCastArray[index].main.temp}</p>
+                        <p>Wind: ${fiveDayCastArray[index].wind.speed} mph</p>
+                        <p>Humidity: ${fiveDayCastArray[index].main.humidity}</p>
+
+                    </div>
+                </div>
+            </div>
+                `
+
+            }
+        })
+}
 
 
 // allowing the search button to be clicked 
@@ -94,6 +128,9 @@ button.addEventListener("click", searchWeather)
 // When city button is clicked it will run the CityButton function to load corresponding weather
 function handler(event) {
     console.log(event.target.textContent)
+    cityValue = event.target.textContent
+
+    cityButtons()
 }
 document.querySelectorAll(".cityBtn").forEach(function (element) {
     element.addEventListener('click', handler)
