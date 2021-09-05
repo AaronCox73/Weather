@@ -7,6 +7,8 @@ var apiKey = "&appid=9504c29e0d15333519b3aa6f3c2b9734";
 var units = "&units=imperial";
 
 var input = document.getElementById("searchBox")
+let lastItem = localStorage.getItem('lastCitySaved')
+input.value = lastItem;
 var button = document.querySelector(".searchBtn")
 var cityValue = ""
 
@@ -32,6 +34,7 @@ function searchWeather() {
 
                 forecastSrch()
                 localStorage.setItem('lastCitySaved', input.value)
+                console.log(api + input.value + units + apiKey)
 
             })
         })
@@ -72,7 +75,7 @@ function forecast() {
             var fiveDayCastArray = fiveDayData.list
             var forecastEl = document.querySelector(".forecast")
             forecastEl.innerHTML = ''
-            for (let index = 3; index < fiveDayCastArray.length; index = index + 8) {
+            for (let index = 7; index < fiveDayCastArray.length; index = index + 8) {
 
                 console.log(fiveDayCastArray[index])
 
@@ -108,7 +111,7 @@ function forecastSrch() {
             var fiveDayCastArray = fiveDayData.list
             var forecastEl = document.querySelector(".forecast")
             forecastEl.innerHTML = ''
-            for (let index = 3; index < fiveDayCastArray.length; index = index + 8) {
+            for (let index = 7; index < fiveDayCastArray.length; index = index + 8) {
 
                 console.log(fiveDayCastArray[index])
 
