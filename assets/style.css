@@ -41,4 +41,6 @@ header h1 {
 
 }
 
-
+.card {
+    justify-content: space-evenly;
+}
