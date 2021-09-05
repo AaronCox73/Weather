@@ -10,6 +10,8 @@ var input = document.getElementById("searchBox")
 var button = document.querySelector(".searchBtn")
 var cityValue = ""
 
+
+
 //allows user to type in any city and get the weather for that city
 function searchWeather() {
     var url = fetch(api + input.value + units + apiKey)
@@ -29,6 +31,8 @@ function searchWeather() {
                 $(humidityEl).empty().append("Humidity: " + data.main.humidity);
 
                 forecastSrch()
+                localStorage.setItem('lastCitySaved', input.value)
+
             })
         })
 }
@@ -63,10 +67,11 @@ function forecast() {
         .then(function (response) {
             return response.json()
         })
+
         .then(function (fiveDayData) {
-            console.log(fiveDayData)
             var fiveDayCastArray = fiveDayData.list
             var forecastEl = document.querySelector(".forecast")
+            forecastEl.innerHTML = ''
             for (let index = 3; index < fiveDayCastArray.length; index = index + 8) {
 
                 console.log(fiveDayCastArray[index])
@@ -102,6 +107,7 @@ function forecastSrch() {
             console.log(fiveDayData)
             var fiveDayCastArray = fiveDayData.list
             var forecastEl = document.querySelector(".forecast")
+            forecastEl.innerHTML = ''
             for (let index = 3; index < fiveDayCastArray.length; index = index + 8) {
 
                 console.log(fiveDayCastArray[index])
